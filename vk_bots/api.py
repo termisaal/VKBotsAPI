@@ -5,9 +5,11 @@ Copyright (c) 2020-2021 termisaal
 
 import aiohttp
 import json
+import typing
 
 from .errors import VKAPIError
-from .utils import to_namedtuple
+from .keyboard import Keyboard
+from .utils import to_namedtuple, get_random_id
 
 
 class MethodGroup:
@@ -18,6 +20,9 @@ class MethodGroup:
         self._v = v
 
     async def _api_request(self, method, **kwargs):
+        for key in list(kwargs):
+            if kwargs[key] is None:
+                kwargs.pop(key)
         kwargs['access_token'] = self._access_token
         kwargs['v'] = self._v
 
@@ -129,8 +134,63 @@ class Messages(MethodGroup):
     async def searchConversations(self):
         pass
 
-    async def send(self):
-        pass
+    async def send(self,
+                   user_id: int = None,
+                   random_id: int = get_random_id(),
+                   peer_id: int = None,
+                   peer_ids: typing.Iterable[int] = None,
+                   domain: str = None,
+                   chat_id: int = None,
+                   message: str = None,
+                   lat: float = None,
+                   long: float = None,
+                   attachment: typing.Union[str, typing.Iterable[str]] = None,
+                   reply_to: int = None,
+                   forward_messages: typing.Union[int, typing.Iterable[int]] = None,
+                   forward: dict = None,
+                   sticker_id: int = None,
+                   keyboard: typing.Union[Keyboard, dict] = None,
+                   template: dict = None,
+                   payload: str = None,
+                   content_source: dict = None,
+                   dont_parse_links: typing.Union[bool, int] = None,
+                   disable_mentions: typing.Union[bool, int] = None,
+                   intent: str = None,
+                   subscribe_id: int = None):
+        if attachment is not None and type(attachment) != str:
+            attachment = ','.join(attachment)
+        if forward_messages is not None and type(forward_messages) != int:
+            forward_messages = ','.join(map(str, forward_messages))
+        if keyboard is not None and type(keyboard) != dict:
+            return dict(keyboard)
+        if dont_parse_links is not None and type(dont_parse_links) == bool:
+            dont_parse_links = int(dont_parse_links)
+        if disable_mentions is not None and type(disable_mentions) == bool:
+            disable_mentions = int(disable_mentions)
+
+        return await self._api_request('messages.send',
+                                       user_id=user_id,
+                                       random_id=random_id,
+                                       peer_id=peer_id,
+                                       peer_ids=peer_ids,
+                                       domain=domain,
+                                       chat_id=chat_id,
+                                       message=message,
+                                       lat=lat,
+                                       long=long,
+                                       attachment=attachment,
+                                       reply_to=reply_to,
+                                       forward_messages=forward_messages,
+                                       forward=forward,
+                                       sticker_id=sticker_id,
+                                       keyboard=keyboard,
+                                       template=template,
+                                       payload=payload,
+                                       content_source=content_source,
+                                       dont_parse_links=dont_parse_links,
+                                       disable_mentions=disable_mentions,
+                                       intent=intent,
+                                       subscribe_id=subscribe_id)
 
     async def sendMessageEventAnswer(self):
         pass

@@ -1,4 +1,4 @@
-from vk_bots import Client, random_id
+from vk_bots import Client
 
 GROUP_ID = 0
 ACCESS_TOKEN = ''
@@ -15,9 +15,7 @@ async def ready():
 async def message_new(message, _):
     print(f'New message from id{message.from_id}: {message.text}')
     await bot.api.messages.send(peer_id=message.peer_id,
-                                random_id=random_id(),
-                                message=message.text,
-                                reply_to=message.id)
+                                message=message.text)
 
 
 bot.run()

@@ -4,7 +4,6 @@ Copyright (c) 2020-2021 termisaal
 """
 
 from .client import Client
-from .utils import random_id
 
 __title__ = 'vk_bots'
 __author__ = 'termisaal'

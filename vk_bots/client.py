@@ -182,8 +182,8 @@ class Client:
             if event['type'] in self.__dir__():
                 data = event['object']
                 args = list(map(to_namedtuple, data.keys(), data.values()))  # args parsing
-                task = asyncio.create_task(self.__getattribute__(event['type'])(*args))
-                asyncio.ensure_future(task)
+                task = self.__getattribute__(event['type'])(*args)
+                asyncio.create_task(task)
 
     def run(self):
         """Function used to run bot"""
