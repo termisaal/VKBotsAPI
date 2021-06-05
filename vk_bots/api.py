@@ -34,7 +34,6 @@ class Api:
                 data = json.loads(data.decode())
 
                 if 'error' in data:
-                    # todo: разобраться почему не работает, починить
                     raise VKAPIError(data['error']['error_code'], data['error']['error_msg'])
 
                 return to_namedtuple('response', data)
