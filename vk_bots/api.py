@@ -157,6 +157,7 @@ class Messages(MethodGroup):
                    disable_mentions: typing.Union[bool, int] = None,
                    intent: str = None,
                    subscribe_id: int = None):
+
         if attachment is not None and type(attachment) != str:
             attachment = ','.join(attachment)
         if forward_messages is not None and type(forward_messages) != int:
