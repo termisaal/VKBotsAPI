@@ -11,7 +11,7 @@ import aiohttp
 
 from .errors import VKAPIError
 from .utils import to_namedtuple
-from .api import Api
+from .api import Api, ApiOld
 
 available_events = (
     # Common
@@ -155,6 +155,7 @@ class Client:
         self.v = v
 
         self.api = Api(access_token, v)
+        self.api_old = ApiOld(access_token, v)
 
         self._long_poll = None
         self.loop = None
