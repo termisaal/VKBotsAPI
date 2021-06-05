@@ -159,6 +159,17 @@ class Client:
         self._long_poll = None
         self.loop = None
 
+    def event(self, coro: typing.Any):
+        """Decorator used to register events"""
+
+        if not asyncio.iscoroutinefunction(coro):
+            raise TypeError('event registered must be coroutine')
+
+        if coro.__name__ not in available_events:
+            raise TypeError('unknown event type')
+
+        self.__setattr__(coro.__name__, coro)
+
     async def _mainloop(self):
         self.long_poll = _LongPollServer(self.group_id, self.access_token, self.v)
         await self.long_poll.setup()
@@ -173,17 +184,6 @@ class Client:
                 args = list(map(to_namedtuple, data.keys(), data.values()))  # args parsing
                 task = asyncio.create_task(self.__getattribute__(event['type'])(*args))
                 asyncio.ensure_future(task)
-
-    def event(self, coro: typing.Any):
-        """Decorator used to register events"""
-
-        if not asyncio.iscoroutinefunction(coro):
-            raise TypeError('event registered must be coroutine')
-
-        if coro.__name__ not in available_events:
-            raise TypeError('unknown event type')
-
-        self.__setattr__(coro.__name__, coro)
 
     def run(self):
         """Function used to run bot"""
