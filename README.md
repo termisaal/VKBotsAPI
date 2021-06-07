@@ -1,4 +1,3 @@
 # VkBots
-WIP
----
+### !!! WIP !!!
 Docs will be available soon
