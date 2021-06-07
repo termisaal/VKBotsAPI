@@ -136,7 +136,7 @@ class Messages(MethodGroup):
 
     async def send(self,
                    user_id: int = None,
-                   random_id: int = get_random_id(),
+                   random_id: int = None,
                    peer_id: int = None,
                    peer_ids: typing.Iterable[int] = None,
                    domain: str = None,
@@ -158,6 +158,8 @@ class Messages(MethodGroup):
                    intent: str = None,
                    subscribe_id: int = None):
 
+        if random_id is None:
+            random_id = get_random_id()
         if attachment is not None and type(attachment) != str:
             attachment = ','.join(attachment)
         if forward_messages is not None and type(forward_messages) != int:
