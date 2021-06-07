@@ -1,11 +1,10 @@
 """
 VK Bots API Wrapper
-Copyright (c) 2020-2021 termisaal
+Copyright (c) 2020-2021 Misaal
 """
 
 import json
 import random
-import typing
 from collections import namedtuple
 
 
